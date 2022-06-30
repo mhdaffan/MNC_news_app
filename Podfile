@@ -6,7 +6,11 @@ target 'NewsApp' do
   use_frameworks!
 
   # Pods for NewsApp
-
+  pod 'SnapKit', '5.0.1'
+  pod 'netfox', '1.19.0'
+  pod 'RxSwift', '6.2.0'
+  pod 'RxCocoa', '6.2.0'
+  
   target 'NewsAppTests' do
     inherit! :search_paths
     # Pods for testing
