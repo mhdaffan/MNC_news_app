@@ -6,6 +6,11 @@
 //
 
 struct ArticleModel {
+    var popularArticle: ArticleItemModel?
+    let latestArticles: [ArticleItemModel]
+}
+
+struct ArticleItemModel {
     let id: String
     let createdAt: String
     let contributorName: String

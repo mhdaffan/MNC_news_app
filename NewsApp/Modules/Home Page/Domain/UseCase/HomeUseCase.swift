@@ -8,7 +8,7 @@
 import RxSwift
 
 protocol HomeUseCase {
-    func getArticles() -> Observable<[ArticleModel]>
+    func getArticles() -> Observable<ArticleModel>
 }
 
 class HomeUseCaseImpl: HomeUseCase {
@@ -21,7 +21,7 @@ class HomeUseCaseImpl: HomeUseCase {
         self.mapper = mapper
     }
     
-    func getArticles() -> Observable<[ArticleModel]> {
+    func getArticles() -> Observable<ArticleModel> {
         return repository.getArticles()
             .map { self.mapper.articleResponseToDomain(response: $0) }
     }

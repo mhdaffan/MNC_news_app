@@ -7,7 +7,7 @@
 
 import UIKit
 
-internal protocol Screenable: class {
+internal protocol Screenable: AnyObject {
     var identifier: String { get }
     var event: ((Navigation) -> Void)? { get set }
 

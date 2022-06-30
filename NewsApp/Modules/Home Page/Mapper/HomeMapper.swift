@@ -6,14 +6,14 @@
 //
 
 protocol HomeMapper {
-    func articleResponseToDomain(response: [ArticleResponseModel]) -> [ArticleModel]
+    func articleResponseToDomain(response: [ArticleResponseModel]) -> ArticleModel
 }
 
 class HomeMapperImpl: HomeMapper {
     
-    func articleResponseToDomain(response: [ArticleResponseModel]) -> [ArticleModel] {
-        return response.map { item -> ArticleModel in
-            return ArticleModel(
+    func articleResponseToDomain(response: [ArticleResponseModel]) -> ArticleModel {
+        let latestArticle = response.map { item -> ArticleItemModel in
+            return ArticleItemModel(
                 id: item.id,
                 createdAt: item.createdAt,
                 contributorName: item.contributorName,
@@ -23,6 +23,9 @@ class HomeMapperImpl: HomeMapper {
                 contentThumbnail: item.contentThumbnail,
                 slideshow: item.slideshow)
         }
+        let popularArticle = latestArticle.randomElement()
+        
+        return ArticleModel(popularArticle: popularArticle, latestArticles: latestArticle)
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  LatestNewsTableViewCell.swift
+//  PopularNewsTableViewCell.swift
 //  NewsApp
 //
 //  Created by Muhammad Affan on 30/6/22.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class LatestNewsTableViewCell: UITableViewCell, ReusableViewCell {
+final class PopularNewsTableViewCell: UITableViewCell, ReusableViewCell {
     
     // MARK: - UI Properties
     
@@ -29,14 +29,7 @@ final class LatestNewsTableViewCell: UITableViewCell, ReusableViewCell {
         $0.textColor = .black
         $0.font = .boldSystemFont(ofSize: 18)
     }
-    private let dateLabel = UILabel().then {
-        $0.backgroundColor = .white
-        $0.textColor = .gray
-        $0.font = .systemFont(ofSize: 10)
-    }
-    private let separatorView = UIView().then {
-        $0.backgroundColor = .lightGray
-    }
+    
     // MARK: - Lifecycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -55,7 +48,7 @@ final class LatestNewsTableViewCell: UITableViewCell, ReusableViewCell {
     
     func configureUI() {
         contentView.backgroundColor = .white
-        contentView.addSubviews(thumbnailImageView, contributorNameLabel, titleLabel, dateLabel, separatorView)
+        contentView.addSubviews(thumbnailImageView, contributorNameLabel, titleLabel)
         
         let ratio = getSizeRatio(targetWidth: AppInfo.screenWidth - 48, width: 640, height: 480)
         thumbnailImageView.snp.makeConstraints {
@@ -69,16 +62,7 @@ final class LatestNewsTableViewCell: UITableViewCell, ReusableViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(contributorNameLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(thumbnailImageView)
-        }
-        dateLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalTo(thumbnailImageView)
-        }
-        separatorView.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(24)
-            $0.leading.trailing.equalTo(thumbnailImageView)
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview().inset(24)
         }
     }
     
@@ -86,7 +70,7 @@ final class LatestNewsTableViewCell: UITableViewCell, ReusableViewCell {
         thumbnailImageView.setImageURL(urlString: cellModel.contentThumbnail, placeholder: "", contentMode: .scaleToFill)
         contributorNameLabel.text = cellModel.contributorName
         titleLabel.text = cellModel.title
-        dateLabel.text = cellModel.createdAt
     }
     
 }
+

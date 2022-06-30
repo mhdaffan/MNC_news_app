@@ -10,17 +10,26 @@ import RxSwift
 
 final class HomeViewController: ViewController {
     
-    let viewModel: HomeViewModel
+    private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
     // MARK: - UI Properties
     
-    private lazy var tableView = UITableView().then {
+    private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
         $0.backgroundColor = .white
         $0.separatorStyle = .none
+        $0.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        $0.estimatedSectionHeaderHeight = 34
+        $0.refreshControl = refreshControl
         $0.register(cell: LatestNewsTableViewCell.self)
+        $0.register(cell: PopularNewsTableViewCell.self)
+        $0.register(headerFooter: LatestNewsTableViewHeader.self)
         $0.delegate = self
         $0.dataSource = self
+    }
+    private lazy var refreshControl = UIRefreshControl().then {
+        $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        $0.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
     
     // MARK: - Lifecycle
@@ -29,7 +38,7 @@ final class HomeViewController: ViewController {
         super.viewDidLoad()
         configureUI()
         observeViewModel()
-        viewModel.getArticles()
+        fetchArticles()
     }
     
     init(viewModel: HomeViewModel) {
@@ -54,7 +63,17 @@ final class HomeViewController: ViewController {
     private func observeViewModel() {
         viewModel.articlesRelay.asDriver().drive(onNext: { [weak self] _ in
             self?.tableView.reloadData()
+            self?.refreshControl.endRefreshing()
         }).disposed(by: disposeBag)
+    }
+    
+    private func fetchArticles() {
+        refreshControl.beginRefreshing()
+        refresh()
+    }
+    
+    @objc private func refresh() {
+        viewModel.getArticles()
     }
     
 }
@@ -65,15 +84,60 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.articlesRelay.value == nil ? 0 : 2
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            return nil
+        default:
+            return tableView.dequeueReusableHeaderFooterView(withIdentifier: LatestNewsTableViewHeader.cellIdentifier) as? LatestNewsTableViewHeader
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 0 : 80
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.articlesRelay.value.count
+        let articles = viewModel.articlesRelay.value
+        switch section {
+        case 0:
+            return articles?.popularArticle == nil ? 0 : 1
+        default:
+            return articles?.latestArticles.count ?? 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(for: indexPath, cell: LatestNewsTableViewCell.self)
+        guard let articleModel = viewModel.articlesRelay.value else {
+            return UITableViewCell()
+        }
         
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(for: indexPath, cell: PopularNewsTableViewCell.self)
+            cell.selectionStyle = .none
+            if let popularArticle = articleModel.popularArticle {
+                cell.updateUI(cellModel: popularArticle)
+            }
+            
+            return cell
+        }
+        
+        let cell = tableView.dequeueReusableCell(for: indexPath, cell: LatestNewsTableViewCell.self)
         cell.selectionStyle = .none
-        cell.cellModel = viewModel.articlesRelay.value[indexPath.row]
+        cell.updateUI(cellModel: articleModel.latestArticles[indexPath.row])
+        
         return cell
     }
     
