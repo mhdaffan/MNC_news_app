@@ -52,10 +52,6 @@ extension Coordinator {
             /// Pops the latest screen from `navigationController` and remove from `screenStack`.
             screenStack.removeLast()
             
-            if navigationController.children.count == 2 {
-                self.navigationController.tabBarController?.tabBar.isHidden = false
-            }
-            
             navigationController.popViewController(animated: animated)
             return
         }
@@ -76,11 +72,6 @@ extension Coordinator {
 
         for numIndex in ((index + 1)..<screenStack.count).reversed() {
             screenStack.remove(at: numIndex)
-        }
-
-        let showTapBar = (screenStack.count == 1)
-        if showTapBar {
-            self.navigationController.tabBarController?.tabBar.isHidden = false
         }
 
         let viewController: UIViewController = navigationController.viewControllers[index]
@@ -104,10 +95,7 @@ extension Coordinator {
         screenStack.append(screen)
 
         let viewController = screen.build()
-
-        if navigationController.children.count > 0 {
-            self.navigationController.tabBarController?.tabBar.isHidden = true
-        }
+        
         navigationController.pushViewController(
             viewController,
             animated: animated
@@ -127,10 +115,6 @@ extension Coordinator {
         }
 
         screenStack.append(contentsOf: screens)
-        
-        if navigationController.children.count > 0 {
-            self.navigationController.tabBarController?.tabBar.isHidden = true
-        }
         
         navigationController.setViewControllers(viewControllers, animated: animated)
     }

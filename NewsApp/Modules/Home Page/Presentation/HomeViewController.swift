@@ -36,6 +36,7 @@ final class HomeViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Home"
         configureUI()
         observeViewModel()
         fetchArticles()
@@ -63,6 +64,17 @@ final class HomeViewController: ViewController {
             self?.tableView.reloadData()
             self?.refreshControl.endRefreshing()
         }).disposed(by: disposeBag)
+        viewModel.errorRelay.asDriver().drive(onNext: { [weak self] error in
+            if let error = error {
+                self?.showErrorAlert(message: error.localizedDescription)
+            }
+        }).disposed(by: disposeBag)
+    }
+    
+    private func showErrorAlert(message: String) {
+        let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        alertController.addAction(.init(title: "OK", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     private func fetchArticles() {

@@ -66,6 +66,7 @@ final class ArticleDetailViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Detail"
         configureUI()
         updateUI()
     }
