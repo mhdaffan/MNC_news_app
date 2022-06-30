@@ -50,6 +50,19 @@ final class ArticleDetailViewControllerTest: XCTestCase {
         XCTAssertEqual(sut.contentLabel.text, "some content")
     }
     
+    func test_numberOfItemsInSection() {
+        let sut = makeSUT(slideshow: [])
+        
+        XCTAssertEqual(sut.collectionView.dataSource?.collectionView(sut.collectionView, numberOfItemsInSection: 0), 0)
+    }
+    
+    func test_cellForItem() {
+        let sut = makeSUT(slideshow: ["http://placeimg.com/640/480/nature"])
+        let cell = sut.collectionView.dataSource?.collectionView(sut.collectionView, cellForItemAt: IndexPath(item: 0, section: 0))
+        
+        XCTAssertEqual(cell, cell as? ArticleDetailSlideShowItemCollectionViewCell)
+    }
+    
     // MARK: - Helper
     
     func makeSUT(slideshow: [String], file: StaticString = #file, line: UInt = #line) -> ArticleDetailViewController {

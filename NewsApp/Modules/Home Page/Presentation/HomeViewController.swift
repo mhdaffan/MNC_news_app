@@ -10,7 +10,7 @@ import RxSwift
 
 final class HomeViewController: ViewController {
     
-    private let viewModel: HomeViewModel
+    var viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
     // MARK: - UI Properties
