@@ -81,7 +81,15 @@ final class HomeViewController: ViewController {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+        guard let articleModel = viewModel.articlesRelay.value else {
+            return
+        }
+        switch indexPath.section {
+        case 0:
+            navigationEvent.send(.next(articleModel.popularArticle))
+        default:
+            navigationEvent.send(.next(articleModel.latestArticles[indexPath.row]))
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

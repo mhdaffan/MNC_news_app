@@ -31,7 +31,23 @@ final class HomeCoordinator: Coordinator {
     }
     
     func showScreen(identifier: String, navigation: Navigation) {
-        
+        switch identifier {
+        case homeScreenIdentifier:
+            configureHomeScreenNavigationEvent(navigation)
+        default:
+            break
+        }
+    }
+    
+    private func configureHomeScreenNavigationEvent(_ navigation: Navigation) {
+        switch navigation {
+        case .previous:
+            pop()
+        case .next(let value):
+            if let result = value as? ArticleItemModel {
+                push(ArticleDetailScreen(result))
+            }
+        }
     }
     
 }

@@ -11,3 +11,5 @@ protocol ScreenResult {}
 extension Int: ScreenResult {}
 extension String: ScreenResult {}
 extension Array: ScreenResult {}
+
+extension ArticleItemModel: ScreenResult {}
