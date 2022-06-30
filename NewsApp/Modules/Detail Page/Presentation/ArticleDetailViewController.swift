@@ -11,6 +11,9 @@ import SnapKit
 final class ArticleDetailViewController: ViewController {
     
     private let viewModel: ArticleDetailViewModel
+    var collectionViewHeight: CGFloat {
+        return viewModel.screenModel.slideshow.isEmpty ? 0 : 100
+    }
     
     // MARK: UI Properties
     
@@ -110,7 +113,7 @@ final class ArticleDetailViewController: ViewController {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(thumbnailImageView.snp.bottom).offset(10)
             $0.leading.trailing.equalTo(titleLabel)
-            $0.height.equalTo(viewModel.screenModel.slideshow.isEmpty ? 0 : 100)
+            $0.height.equalTo(collectionViewHeight)
         }
         contentLabel.snp.makeConstraints {
             $0.top.equalTo(collectionView.snp.bottom).offset(24)
