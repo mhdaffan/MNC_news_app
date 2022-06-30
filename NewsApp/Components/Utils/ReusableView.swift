@@ -42,6 +42,25 @@ extension UITableView {
     }
 }
 
+extension UICollectionView {
+    
+    /// Register class of `UICollectionViewCell` to reusable
+    /// Call `register(cell: UICollectionViewCell.self)`
+    final func register<T: UICollectionViewCell>(cell: T.Type) where T: ReusableViewCell {
+        self.register(T.self, forCellWithReuseIdentifier: cell.cellIdentifier)
+    }
+    
+    /// Dequeue class of `UICollectionViewCell` of reusable
+    /// Call `dequeueReusableCell(for: indexPath, cell: UICollectionViewCell.self)`
+    final func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath, cell: T.Type = T.self) -> T where T: ReusableViewCell {
+        guard let reusableCell = self.dequeueReusableCell(withReuseIdentifier: cell.cellIdentifier, for: indexPath) as? T else {
+            fatalError("Failed to dequeue cell with identifier \(cell.cellIdentifier) matching type \(cell.self)")
+        }
+        
+        return reusableCell
+    }
+}
+
 extension UIView {
     
     static var cellIdentifier: String {
