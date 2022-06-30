@@ -11,16 +11,17 @@ import SnapKit
 final class LatestNewsTableViewHeader: UITableViewHeaderFooterView, ReusableViewCell {
     
     // MARK: - UI Properties
-    private let topSeparator = UIView().then {
+    
+    private(set) var topSeparator = UIView().then {
         $0.backgroundColor = .lightGray
     }
-    private let titleLabel = UILabel().then {
+    private(set) var titleLabel = UILabel().then {
         $0.text = "LATEST NEWS"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 24)
         $0.backgroundColor = .white
     }
-    private let bottomSeparator = UIView().then {
+    private(set) var bottomSeparator = UIView().then {
         $0.backgroundColor = .lightGray
     }
     
@@ -35,7 +36,7 @@ final class LatestNewsTableViewHeader: UITableViewHeaderFooterView, ReusableView
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureUI() {
+    func configureUI() {
         contentView.backgroundColor = .white
         contentView.addSubviews(topSeparator, titleLabel, bottomSeparator)
         topSeparator.snp.makeConstraints {

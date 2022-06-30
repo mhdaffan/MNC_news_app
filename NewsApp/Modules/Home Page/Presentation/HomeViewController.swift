@@ -15,7 +15,7 @@ final class HomeViewController: ViewController {
     
     // MARK: - UI Properties
     
-    private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
+    private(set) lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
         $0.backgroundColor = .white
         $0.separatorStyle = .none
         $0.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
@@ -27,7 +27,7 @@ final class HomeViewController: ViewController {
         $0.delegate = self
         $0.dataSource = self
     }
-    private lazy var refreshControl = UIRefreshControl().then {
+    private(set) lazy var refreshControl = UIRefreshControl().then {
         $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         $0.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
@@ -50,9 +50,7 @@ final class HomeViewController: ViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Private Methods
-    
-    private func configureUI() {
+    func configureUI() {
         view.backgroundColor = .white
         view.addSubview(tableView)
         tableView.snp.makeConstraints {

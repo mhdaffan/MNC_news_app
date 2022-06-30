@@ -12,18 +12,18 @@ final class PopularNewsTableViewCell: UITableViewCell, ReusableViewCell {
     
     // MARK: - UI Properties
     
-    private let thumbnailImageView = UIImageView().then {
+    private(set) var thumbnailImageView = UIImageView().then {
         $0.clipsToBounds = true
         $0.backgroundColor = .gray
         $0.layer.cornerRadius = 5
     }
-    private let contributorNameLabel = UILabel().then {
+    private(set) var contributorNameLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.backgroundColor = .white
         $0.textColor = .systemPink
         $0.font = .systemFont(ofSize: 12)
     }
-    private let titleLabel = UILabel().then {
+    private(set) var titleLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.backgroundColor = .white
         $0.textColor = .black
