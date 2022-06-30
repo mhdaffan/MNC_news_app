@@ -5,8 +5,10 @@
 //  Created by Muhammad Affan on 29/6/22.
 //
 
+import RxSwift
+
 protocol HomeUseCase {
-    
+    func getArticles() -> Observable<[ArticleModel]>
 }
 
 class HomeUseCaseImpl: HomeUseCase {
@@ -17,6 +19,11 @@ class HomeUseCaseImpl: HomeUseCase {
     init(repository: HomeRepository, mapper: HomeMapper) {
         self.repository = repository
         self.mapper = mapper
+    }
+    
+    func getArticles() -> Observable<[ArticleModel]> {
+        return repository.getArticles()
+            .map { self.mapper.articleResponseToDomain(response: $0) }
     }
     
 }

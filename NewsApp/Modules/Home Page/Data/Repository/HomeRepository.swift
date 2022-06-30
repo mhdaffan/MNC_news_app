@@ -5,8 +5,10 @@
 //  Created by Muhammad Affan on 29/6/22.
 //
 
+import RxSwift
+
 protocol HomeRepository {
-    
+    func getArticles() -> Observable<[ArticleResponseModel]>
 }
 
 class HomeRepositoryImpl: HomeRepository {
@@ -15,6 +17,10 @@ class HomeRepositoryImpl: HomeRepository {
     
     init(remote: HomeRemoteDataSource) {
         self.remote = remote
+    }
+    
+    func getArticles() -> Observable<[ArticleResponseModel]> {
+        return remote.getArticles()
     }
     
 }

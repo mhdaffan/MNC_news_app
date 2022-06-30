@@ -14,6 +14,7 @@ final class HomeViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        viewModel.getArticles()
     }
     
     init(viewModel: HomeViewModel) {
