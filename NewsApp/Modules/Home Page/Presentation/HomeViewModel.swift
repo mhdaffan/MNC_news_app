@@ -6,11 +6,12 @@
 //
 
 import RxSwift
+import RxCocoa
 
-final class HomeViewModel {
+final class HomeViewModel: BaseViewModel {
     
     let useCase: HomeUseCase
-    let disposeBag = DisposeBag()
+    let articlesRelay = BehaviorRelay<[ArticleModel]>(value: [ArticleModel]())
     
     init(useCase: HomeUseCase) {
         self.useCase = useCase
@@ -21,9 +22,11 @@ final class HomeViewModel {
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(
                 onNext: { [weak self] response in
-                    
+                    self?.articlesRelay.accept(response)
+                    self?.errorRelay.accept(nil)
                 }, onError: { [weak self] error in
-                    
+                    self?.articlesRelay.accept([])
+                    self?.errorRelay.accept(error)
                 })
             .disposed(by: disposeBag)
     }

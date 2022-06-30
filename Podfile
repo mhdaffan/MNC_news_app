@@ -10,6 +10,8 @@ target 'NewsApp' do
   pod 'netfox', '1.19.0'
   pod 'RxSwift', '6.2.0'
   pod 'RxCocoa', '6.2.0'
+  pod 'Kingfisher', '5.2'
+  pod 'ReachabilitySwift', '4.3.0'
   
   target 'NewsAppTests' do
     inherit! :search_paths
