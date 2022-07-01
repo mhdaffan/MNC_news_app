@@ -10,10 +10,6 @@ import Kingfisher
 extension UIImageView {
     
     func setImageURL(urlString: String, placeholder: String, contentMode: UIView.ContentMode = .scaleAspectFill) {
-//        var newUrl = urlString.replacingOccurrences(of: "http", with: "https")
-//        if let url = newUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-//            newUrl = url
-//        }
         
         let url = URL(string: urlString)
         let placeholder = Image(named: placeholder)
